@@ -10,5 +10,9 @@ namespace EnglishTeachingInstitute.Services.Interfaces
     public interface IStudentService
     {
         List<Student> GetStudents();
+        bool DeleteStudent(int id);
+
+        StudentUpdateAndSave studentUpdateAndSave(Student student);
+        Student StudentFormFill(int id);
     }
 }

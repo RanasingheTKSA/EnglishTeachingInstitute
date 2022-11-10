@@ -33,6 +33,39 @@ namespace EnglishTeachingInstitute.WebApplication
             this.GetStudentDetails();
         }
 
-       
+        protected void btn_update_click(object sender, EventArgs e)
+        {
+            var id = int.Parse((sender as Button).CommandArgument);
+            Response.Redirect("StudentUpdate.aspx?id=" + id);
+        }
+
+        protected void btn_register_click(object sender, EventArgs e)
+        {
+            var id = int.Parse((sender as Button).CommandArgument);
+            Response.Redirect("StudentUpdate.aspx?id=" +id);
+        }
+
+        protected void btn_delete_click(object sender, EventArgs e)
+        {
+            var studentId = int.Parse((sender as Button).CommandArgument);
+            IStudentService studentService_ = new StudentService();
+            var response = studentService_.DeleteStudent(studentId);
+
+            if (response)
+            {
+                string message = "Student deleted successfully ";
+                string script = "window.onload = function(){ alert('";
+                script += message;
+                script += "');";
+                script += "window.location = '";
+                script += "'; }";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
+
+                this.GetStudentDetails();
+            }
+        }
+
+
+
     }
 }

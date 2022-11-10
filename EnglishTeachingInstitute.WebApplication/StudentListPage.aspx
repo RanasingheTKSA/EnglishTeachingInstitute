@@ -1,18 +1,28 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StudentListPage.aspx.cs" Inherits="EnglishTeachingInstitute.WebApplication.StudentListPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>STUDENT LIST</h2>
+    <h2>STUDENT LIST</h2> 
+    <asp.Button
+        ID="btn_register"
+        runat="server"
+        CommandName="register"
+        class ="btn btn-success"
+        OnClick ="btn_register_click"
+        CommandArgument ='< %# Eval("Id") %>'>Register</asp.Button>
     <hr />
     <asp:GridView 
         ID ="GridStudentList"
         ItemType ="EnglishTeachingInstitute.Model.Student"
-        AllowPaging="true"
+        AllowPaging="true" 
         DataKeyNames ="Id"
         PageSize="20"
         OnPageIndexChanging="GridPageIndexChange"
+        OnRowUpdating ="btn_update_click"
+        OnRowDeleting ="btn_delete_click"
         AutoGenerateColumns="false"
         runat="server"
         class ="table table-striped">
+         
         <Columns>
             <asp:DynamicField DataField ="Id" />
             <asp:DynamicField DataField ="FirstName" />
@@ -23,10 +33,9 @@
             <%--<asp:DynamicField DataField ="CreatedDate" />--%>
 
             
-        <%--OnRowUpdating ="btn_update_click"
-        OnRowDeleting ="btn_delete_click"--%>
+      
 
-            <%--<asp:TemplateField>
+            <asp:TemplateField>
                 <ItemTemplate>
                     <asp:Button 
                         ID="btn_update"
@@ -35,7 +44,7 @@
                         class ="btn btn-success"
                         CommandName="update"
                         OnClick ="btn_update_click"
-                        CommandArgument ='< %# Eval("Id") %>'/>
+                        CommandArgument='<%# Eval("Id") %>'/>
 
                     <asp:Button 
                         ID="btn_delete"
@@ -47,7 +56,7 @@
                         CommandArgument='<%# Eval("Id") %>' />
 
                 </ItemTemplate>
-            </asp:TemplateField>--%>
+            </asp:TemplateField>
         </Columns>
     </asp:GridView>
 
