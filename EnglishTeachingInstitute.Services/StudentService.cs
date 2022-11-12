@@ -59,7 +59,7 @@ namespace EnglishTeachingInstitute.Services.Interfaces
                         LastName = Reader["lastName"].ToString(),
                         Address = Reader["address"].ToString(),
                         BirthDay = Reader["birthday"].ToString(),
-                        ContactNo = Reader["contactNumber"].ToString(),
+                        ContactNumber = Reader["contactNumber"].ToString(),
                         //CreatedTime = DateTime.Parse(mySqlDataReader["createdTime"].ToString()),
 
                     };
@@ -83,7 +83,7 @@ namespace EnglishTeachingInstitute.Services.Interfaces
 
             try
             {
-                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, contactNo, birthday FROM Student WHERE id = @id";
+                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, contactNumber, birthday FROM Student WHERE id = @id";
                 sqlCommand.Parameters.AddWithValue("@id", id);
                 Reader = sqlCommand.ExecuteReader();
 
@@ -92,7 +92,7 @@ namespace EnglishTeachingInstitute.Services.Interfaces
                     student.FirstName = Reader["firstName"].ToString();
                     student.LastName = Reader["lastName"].ToString();
                     student.Address = Reader["address"].ToString();
-                    student.ContactNo = Reader["contactNo"].ToString();
+                    student.ContactNumber = Reader["contactNumber"].ToString();
                     student.BirthDay = Reader["birthday"].ToString();
                 }
 
@@ -100,13 +100,19 @@ namespace EnglishTeachingInstitute.Services.Interfaces
             {
 
             }
+            finally
+            {
+                SqlConnection.Close();
+                Reader.Close();
+                sqlCommand.Parameters.Clear();
+            }
             return student;
         }
          
-        public StudentUpdateAndSave studentUpdateAndSave(Student student)
+        public ResponseModel SaveStudentDetails(Student student)
         {
-            var response = new StudentUpdateAndSave();
-
+            var response = new ResponseModel();
+            var contactNumber = string.Empty;
             var connectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionName"].ToString();
             var SqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand("", SqlConnection);
@@ -118,47 +124,68 @@ namespace EnglishTeachingInstitute.Services.Interfaces
                 if (student.Id > 0)
                 {
                     sqlCommand.CommandText = "UPDATE Student SET firstName = @firstName, lastName = @lastName," +
-                        "address = @address, birthday = @birthday, contactNo = @contactNumber WHERE id = @id";
+                        "address = @address, birthday = @birthday, contactNumber = @contactNumber WHERE id = @id";
 
                     sqlCommand.Parameters.AddWithValue("@id", student.Id);
                     sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
                     sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
                     sqlCommand.Parameters.AddWithValue("@address", student.Address);
-                    sqlCommand.Parameters.AddWithValue("@contactNo", student.ContactNo);
+                    sqlCommand.Parameters.AddWithValue("@contactNumber", student.ContactNumber);
                     sqlCommand.Parameters.AddWithValue("@birthday", DateTime.Parse(student.BirthDay));
                 }
                 else
                 {
-                    sqlCommand.CommandText = "SELECT contactNo FROM Student WHERE contactNo = @contactNumber";
-                    sqlCommand.Parameters.AddWithValue("@contactnumber", student.ContactNo);
+                    sqlCommand.CommandText = "SELECT contactNumber FROM Student WHERE contactNumber = @contactNumber";
+                    sqlCommand.Parameters.AddWithValue("@contactnumber", student.ContactNumber);
                     Reader = sqlCommand.ExecuteReader();
+
+                    while (Reader.Read()) 
+                    {
+                        contactNumber = Reader["contactNumber"].ToString();
+                    }
+
+                    if(contactNumber == student.ContactNumber)
+                    {
+                        response.IsSuceess = false;
+                        response.Message = "Already registered the phone number and using a different phone number";
+
+                        return response;
+
+                    }
 
                     Reader.Close();
                     sqlCommand.Parameters.Clear();
 
                     sqlCommand.CommandText = "INSERT INTO Student(firstName, lastName, address, contactNumber, birthday)" +
-                        "VALUES (@firstName, @lastName, @address, @contactNo, @birthday)";
+                        "VALUES (@firstName, @lastName, @address, @contactNumber, @birthday)";
 
                     sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
                     sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
                     sqlCommand.Parameters.AddWithValue("@address", student.Address);
-                    sqlCommand.Parameters.AddWithValue("@contactNumber", student.ContactNo);
+                    sqlCommand.Parameters.AddWithValue("@contactNumber", student.ContactNumber);
                     sqlCommand.Parameters.AddWithValue("@birthday", student.BirthDay);
                 }
                 sqlCommand.ExecuteScalar();
                 response.IsSuceess = true;
+                response.Message = "A new member has been registered.";
             }
             catch(Exception ex)
             {
 
+            }
+            finally
+            {
+                SqlConnection.Close();
+                sqlCommand.Dispose();
             }
             return response;
         }
 
 
     }
-    public class StudentUpdateAndSave
+    public class ResponseModel
     {
         public bool IsSuceess { get; set; }
+        public string Message { get; set; }
     }
 }

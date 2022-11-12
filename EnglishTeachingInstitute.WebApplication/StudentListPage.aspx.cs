@@ -39,12 +39,6 @@ namespace EnglishTeachingInstitute.WebApplication
             Response.Redirect("StudentUpdate.aspx?id=" + id);
         }
 
-        protected void btn_register_click(object sender, EventArgs e)
-        {
-            var id = int.Parse((sender as Button).CommandArgument);
-            Response.Redirect("StudentUpdate.aspx?id=" +id);
-        }
-
         protected void btn_delete_click(object sender, EventArgs e)
         {
             var studentId = int.Parse((sender as Button).CommandArgument);
@@ -65,7 +59,9 @@ namespace EnglishTeachingInstitute.WebApplication
             }
         }
 
-
-
+        protected void btn_register_click(object sender, EventArgs e)
+        {
+            Response.Redirect("StudentUpdate.aspx?id=" + 0);
+        }
     }
 }

@@ -2,20 +2,21 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <h2>STUDENT LIST</h2> 
-    <asp.Button
-        ID="btn_register"
-        runat="server"
-        CommandName="register"
-        class ="btn btn-success"
-        OnClick ="btn_register_click"
-        CommandArgument ='< %# Eval("Id") %>'>Register</asp.Button>
+     <asp:Button 
+         ID="Button1" 
+         runat="server" 
+         Text="Click here" 
+         OnClick="btn_register_click"
+         class ="btn btn-success"
+         CommandName="insert"
+         CommandArgument='<%# Eval("Id") %>'/>  
     <hr />
     <asp:GridView 
         ID ="GridStudentList"
         ItemType ="EnglishTeachingInstitute.Model.Student"
         AllowPaging="true" 
         DataKeyNames ="Id"
-        PageSize="20"
+        PageSize="5"
         OnPageIndexChanging="GridPageIndexChange"
         OnRowUpdating ="btn_update_click"
         OnRowDeleting ="btn_delete_click"
@@ -29,7 +30,7 @@
             <asp:DynamicField DataField ="LastName" />
             <asp:DynamicField DataField ="Address" />
             <asp:DynamicField DataField ="BirthDay" />
-            <asp:DynamicField DataField ="ContactNo" />
+            <asp:DynamicField DataField ="ContactNumber" />
             <%--<asp:DynamicField DataField ="CreatedDate" />--%>
 
             

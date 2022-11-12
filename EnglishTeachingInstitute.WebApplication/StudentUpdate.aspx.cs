@@ -32,7 +32,7 @@ namespace EnglishTeachingInstitute.WebApplication
             TextFirstName.Text = student.FirstName;
             TextLastName.Text = student.LastName;
             TextAddress.Text = student.Address;
-            TextContactNumber.Text = student.ContactNo;
+            TextContactNumber.Text = student.ContactNumber;
             TextBirthday.Text = student.BirthDay;
         }
 
@@ -47,16 +47,28 @@ namespace EnglishTeachingInstitute.WebApplication
             student.FirstName = TextFirstName.Text.Trim();
             student.LastName = TextLastName.Text.Trim();
             student.Address = TextAddress.Text.Trim();
-            student.ContactNo = TextContactNumber.Text.Trim();
+            student.ContactNumber = TextContactNumber.Text.Trim();
             student.BirthDay = TextBirthday.Text.Trim();
 
             IStudentService studentService_ = new StudentService();
-            var response = studentService_.studentUpdateAndSave(student);
+            var response = studentService_.SaveStudentDetails(student);
 
             if (response.IsSuceess)
             {
-                message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
-                url = "StudentList.aspx";
+                message = student.Id == 0 ? response.Message : response.Message;
+                url = "StudentListPage.aspx";
+                script = "window.onload = function(){ alert('";
+                script += message;
+                script += "');";
+                script += "window.location = '";
+                script += url;
+                script += "'; }";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
+            }
+            if (!response.IsSuceess)
+            {
+                message = response.Message;
+                url = "StudentUpdate.aspx";
                 script = "window.onload = function(){ alert('";
                 script += message;
                 script += "');";

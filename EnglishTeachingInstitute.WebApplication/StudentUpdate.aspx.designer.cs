@@ -69,24 +69,6 @@ namespace EnglishTeachingInstitute.WebApplication
         protected global::System.Web.UI.WebControls.TextBox TextAddress;
 
         /// <summary>
-        /// FormContactNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FormContactNumber;
-
-        /// <summary>
-        /// TextContactNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextContactNumber;
-
-        /// <summary>
         /// FormBirthday control.
         /// </summary>
         /// <remarks>
@@ -103,6 +85,24 @@ namespace EnglishTeachingInstitute.WebApplication
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBirthday;
+
+        /// <summary>
+        /// FormContactNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FormContactNumber;
+
+        /// <summary>
+        /// TextContactNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextContactNumber;
 
         /// <summary>
         /// SaveButton control.

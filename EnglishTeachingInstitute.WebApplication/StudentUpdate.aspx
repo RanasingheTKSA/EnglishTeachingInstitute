@@ -16,12 +16,12 @@
             <asp:TextBox ID="TextAddress" class="form-control" runat="server" />
         </div>
         <div class="form-group">
-            <asp:Label ID="FormContactNumber" Text="ContactNumber" runat="server" />
-            <asp:TextBox ID="TextContactNumber" class="form-control" runat="server" />
-        </div>
-        <div class="form-group">
             <asp:Label ID="FormBirthday" Text="Birthday" runat="server" />
             <asp:TextBox ID="TextBirthday" class="form-control" runat="server" />
+        </div>
+        <div class="form-group">
+            <asp:Label ID="FormContactNumber" Text="ContactNumber" runat="server" />
+            <asp:TextBox ID="TextContactNumber" class="form-control" runat="server" />
         </div>
         
         <asp:Button ID="SaveButton" Class="btn btn-primary" runat="server"  Text="REGISTER" OnClick="SaveStudent"/>

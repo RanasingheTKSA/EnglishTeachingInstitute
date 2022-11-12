@@ -11,8 +11,7 @@ namespace EnglishTeachingInstitute.Services.Interfaces
     {
         List<Student> GetStudents();
         bool DeleteStudent(int id);
-
-        StudentUpdateAndSave studentUpdateAndSave(Student student);
+        ResponseModel SaveStudentDetails(Student student);
         Student StudentFormFill(int id);
     }
 }
