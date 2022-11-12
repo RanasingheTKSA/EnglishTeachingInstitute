@@ -21,8 +21,8 @@ namespace EnglishTeachingInstitute.WebApplication
 
         public void GetStudentDetails()
         {
-            IStudentService studentService_ = new StudentService();
-            var student = studentService_.GetStudents();
+            IStudentService studentService = new StudentService();
+            var student = studentService.GetStudents();
 
             GridStudentList.DataSource = student;
             GridStudentList.DataBind();
@@ -43,8 +43,8 @@ namespace EnglishTeachingInstitute.WebApplication
         protected void btn_delete_click(object sender, EventArgs e)
         {
             var studentId = int.Parse((sender as Button).CommandArgument);
-            IStudentService studentService_ = new StudentService();
-            var response = studentService_.DeleteStudent(studentId);
+            IStudentService studentService = new StudentService();
+            var response = studentService.DeleteStudent(studentId);
 
             if (response.IsSuceess)
             {
