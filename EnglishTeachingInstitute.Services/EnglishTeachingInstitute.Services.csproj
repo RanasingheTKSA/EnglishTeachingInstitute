@@ -105,9 +105,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnglishTeachingInstitute.Data\EnglishTeachingInstitute.Data.csproj">
+      <Project>{8299AA35-4105-4F2B-AB80-4FD2E63CCAEE}</Project>
+      <Name>EnglishTeachingInstitute.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EnglishTeachingInstitute.Model\EnglishTeachingInstitute.Model.csproj">
       <Project>{392365cd-35cd-4f1c-b98c-da126b23ba7e}</Project>
       <Name>EnglishTeachingInstitute.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EnglishTeachingInstitute.Util\EnglishTeachingInstitute.Util.csproj">
+      <Project>{A9EF6D04-324C-4A91-808B-931342FAF197}</Project>
+      <Name>EnglishTeachingInstitute.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

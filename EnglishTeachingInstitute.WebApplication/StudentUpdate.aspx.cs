@@ -18,16 +18,15 @@ namespace EnglishTeachingInstitute.WebApplication
             {
                 if(id > 0)
                 {
-                    FillStudentFormData(id);
+                    ConfigureStudentForm(id);
                 }
             }
-
         }
 
-        protected void FillStudentFormData(int id)
+        protected void ConfigureStudentForm(int id)
         {
-            IStudentService studentService_ = new StudentService();
-            var student = studentService_.StudentFormFill(id);
+            IStudentService studentService = new StudentService();
+            var student = studentService.StudentForm(id);
 
             TextFirstName.Text = student.FirstName;
             TextLastName.Text = student.LastName;
@@ -50,8 +49,8 @@ namespace EnglishTeachingInstitute.WebApplication
             student.ContactNumber = TextContactNumber.Text.Trim();
             student.BirthDay = TextBirthday.Text.Trim();
 
-            IStudentService studentService_ = new StudentService();
-            var response = studentService_.SaveStudentDetails(student);
+            IStudentService studentService = new StudentService();
+            var response = studentService.SaveStudentDetails(student);
 
             if (response.IsSuceess)
             {
@@ -65,6 +64,7 @@ namespace EnglishTeachingInstitute.WebApplication
                 script += "'; }";
                 ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
             }
+
             if (!response.IsSuceess)
             {
                 message = response.Message;

@@ -5,7 +5,7 @@
      <asp:Button 
          ID="Button1" 
          runat="server" 
-         Text="Click here" 
+         Text="Add New Student" 
          OnClick="btn_register_click"
          class ="btn btn-success"
          CommandName="insert"

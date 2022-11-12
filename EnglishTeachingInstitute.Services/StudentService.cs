@@ -6,48 +6,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using EnglishTeachingInstitute.Data;
+using EnglishTeachingInstitute.Util;
 
 namespace EnglishTeachingInstitute.Services.Interfaces
 {
-    public class StudentService : IStudentService
+    public class StudentService : DatabaseConnection, IStudentService
     {
-        //Delete Student
-        public bool DeleteStudent(int id)
+        public StudentService()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionName"].ToString();
-            var SqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand("", SqlConnection);
-            SqlConnection.Open();
+
+        }
+        
+        //Delete Student
+        public ResponseModel DeleteStudent(int id)
+        {
+            var response = new ResponseModel();
+            SqlCommand sqlCommand = new SqlCommand("", connection);
+            connection.Open();
 
             try
             {
                 sqlCommand.CommandText = "DELETE FROM Student WHERE ID = @studentId";
                 sqlCommand.Parameters.AddWithValue("@studentId", id);
                 sqlCommand.ExecuteScalar();
+
+                response.IsSuceess = true;
+                response.Message = ApplicationConstant.STUDENT_DELETE_SUCCESSFULL_MESSAGE;
             }
             catch(Exception ex) {
-                return false;
+
+                response.IsSuceess = false;
+                response.Message = ApplicationConstant.COMMON_ERROR_OCCURE_EXCEPTION_MESSAGE;
             }
             finally
             {
-                SqlConnection.Close();
+                connection.Close();
             }
-            return true;
+            return response;
         }
 
         //Get all student as a list
         public List<Student> GetStudents()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionName"].ToString();
-            var SqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand("", SqlConnection);
+            var sqlCommand = new SqlCommand("", connection);
             SqlDataReader Reader = null;
-            SqlConnection.Open();
-
+            connection.Open();
+                         
             var studentList = new List<Student>();
             try
             {
-                sqlCommand.CommandText = "SELECT * FROM Student";
+                sqlCommand.CommandText = "SELECT * FROM Student ORDER BY createdTime DESC";
                 Reader = sqlCommand.ExecuteReader();
 
                 while (Reader.Read()) 
@@ -60,8 +69,7 @@ namespace EnglishTeachingInstitute.Services.Interfaces
                         Address = Reader["address"].ToString(),
                         BirthDay = Reader["birthday"].ToString(),
                         ContactNumber = Reader["contactNumber"].ToString(),
-                        //CreatedTime = DateTime.Parse(mySqlDataReader["createdTime"].ToString()),
-
+                        CreatedTime = DateTime.Parse(Reader["createdTime"].ToString()),
                     };
                     studentList.Add(studentDetails);
                 }
@@ -69,55 +77,59 @@ namespace EnglishTeachingInstitute.Services.Interfaces
             catch(Exception ex) { 
             
             }
+            finally
+            {
+                connection.Close();
+            }
+
             return studentList;
         }
 
-        public Student StudentFormFill(int id)
+        public Student StudentForm(int id)
         {
             var student = new Student();
-            var connectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionName"].ToString();
-            var SqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand("", SqlConnection);
-            SqlDataReader Reader = null;
-            SqlConnection.Open();
+            var sqlCommand = new SqlCommand("", connection);
+            SqlDataReader reader = null;
+            connection.Open();
 
             try
             {
                 sqlCommand.CommandText = "SELECT id, firstName, lastName, address, contactNumber, birthday FROM Student WHERE id = @id";
                 sqlCommand.Parameters.AddWithValue("@id", id);
-                Reader = sqlCommand.ExecuteReader();
+                reader = sqlCommand.ExecuteReader();
 
-                while (Reader.Read())
+                while (reader.Read())
                 {
-                    student.FirstName = Reader["firstName"].ToString();
-                    student.LastName = Reader["lastName"].ToString();
-                    student.Address = Reader["address"].ToString();
-                    student.ContactNumber = Reader["contactNumber"].ToString();
-                    student.BirthDay = Reader["birthday"].ToString();
+                    student.FirstName = reader["firstName"].ToString();
+                    student.LastName = reader["lastName"].ToString();
+                    student.Address = reader["address"].ToString();
+                    student.ContactNumber = reader["contactNumber"].ToString();
+                    student.BirthDay = reader["birthday"].ToString();
                 }
 
             }catch(Exception ex)
             {
 
             }
+
             finally
             {
-                SqlConnection.Close();
-                Reader.Close();
+                connection.Close();
+                reader.Close();
                 sqlCommand.Parameters.Clear();
             }
             return student;
         }
          
+        //update and insert
         public ResponseModel SaveStudentDetails(Student student)
         {
             var response = new ResponseModel();
             var contactNumber = string.Empty;
-            var connectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionName"].ToString();
-            var SqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand("", SqlConnection);
+           
+            SqlCommand sqlCommand = new SqlCommand("", connection);
             SqlDataReader Reader = null;
-            SqlConnection.Open();
+            connection.Open();
 
             try
             {
@@ -147,45 +159,41 @@ namespace EnglishTeachingInstitute.Services.Interfaces
                     if(contactNumber == student.ContactNumber)
                     {
                         response.IsSuceess = false;
-                        response.Message = "Already registered the phone number and using a different phone number";
+                        response.Message = ApplicationConstant.PHONE_NUMBER_SUCCESSFULL_MESSAGE;
 
                         return response;
-
                     }
 
                     Reader.Close();
                     sqlCommand.Parameters.Clear();
 
-                    sqlCommand.CommandText = "INSERT INTO Student(firstName, lastName, address, contactNumber, birthday)" +
-                        "VALUES (@firstName, @lastName, @address, @contactNumber, @birthday)";
+                    sqlCommand.CommandText = "INSERT INTO Student(firstName, lastName, address, contactNumber, birthday, createdTime)" +
+                        "VALUES (@firstName, @lastName, @address, @contactNumber, @birthday, @createdTime)";
 
                     sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
                     sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
                     sqlCommand.Parameters.AddWithValue("@address", student.Address);
                     sqlCommand.Parameters.AddWithValue("@contactNumber", student.ContactNumber);
                     sqlCommand.Parameters.AddWithValue("@birthday", student.BirthDay);
+                    sqlCommand.Parameters.AddWithValue("@createdTime", DateTime.UtcNow);
                 }
                 sqlCommand.ExecuteScalar();
                 response.IsSuceess = true;
-                response.Message = "A new member has been registered.";
+                response.Message = ApplicationConstant.NEW_MEMBER_SUCCESSFULL;
             }
             catch(Exception ex)
             {
 
             }
+
             finally
             {
-                SqlConnection.Close();
+                connection.Close();
                 sqlCommand.Dispose();
             }
             return response;
         }
 
-
     }
-    public class ResponseModel
-    {
-        public bool IsSuceess { get; set; }
-        public string Message { get; set; }
-    }
+   
 }

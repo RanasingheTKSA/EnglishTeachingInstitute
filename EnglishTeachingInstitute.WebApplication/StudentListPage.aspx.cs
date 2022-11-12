@@ -1,4 +1,5 @@
 ﻿using EnglishTeachingInstitute.Services.Interfaces;
+using EnglishTeachingInstitute.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +46,9 @@ namespace EnglishTeachingInstitute.WebApplication
             IStudentService studentService_ = new StudentService();
             var response = studentService_.DeleteStudent(studentId);
 
-            if (response)
+            if (response.IsSuceess)
             {
-                string message = "Student deleted successfully ";
+                string message = response.Message;
                 string script = "window.onload = function(){ alert('";
                 script += message;
                 script += "');";
@@ -56,6 +57,16 @@ namespace EnglishTeachingInstitute.WebApplication
                 ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
 
                 this.GetStudentDetails();
+            }
+            else
+            {
+                string message = response.Message;
+                string script = "window.onload = function(){ alert('";
+                script += message;
+                script += "');";
+                script += "window.location = '";
+                script += "'; }";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
             }
         }
 

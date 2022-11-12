@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishTeachingInstitute.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishTeachingInstitute.Data", "EnglishTeachingInstitute.Data\EnglishTeachingInstitute.Data.csproj", "{8299AA35-4105-4F2B-AB80-4FD2E63CCAEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishTeachingInstitute.Util", "EnglishTeachingInstitute.Util\EnglishTeachingInstitute.Util.csproj", "{A9EF6D04-324C-4A91-808B-931342FAF197}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{8299AA35-4105-4F2B-AB80-4FD2E63CCAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8299AA35-4105-4F2B-AB80-4FD2E63CCAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8299AA35-4105-4F2B-AB80-4FD2E63CCAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9EF6D04-324C-4A91-808B-931342FAF197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9EF6D04-324C-4A91-808B-931342FAF197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9EF6D04-324C-4A91-808B-931342FAF197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9EF6D04-324C-4A91-808B-931342FAF197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
